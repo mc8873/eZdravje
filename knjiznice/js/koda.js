@@ -48,10 +48,11 @@ function getSessionId() {
 function initMap() {
     var map;
     var infowindow;
+    var pozicija={lat: 46.0501, lng: 14.505};
    document.getElementById('map').className = 'map2';
     var mapDiv = document.getElementById('map');
     var map = new google.maps.Map(mapDiv, {
-         center: {lat: 46.0501, lng: 14.505},
+         center: pozicija,
          zoom: 12
     });
 
@@ -61,13 +62,23 @@ function initMap() {
         lat: position.coords.latitude,
         lng: position.coords.longitude
       };
-      
+      pozicija =pos;
       map.setCenter(pos);
-      infowindow = new google.maps.InfoWindow();
+      
+ 
+    }, function() {
+      handleLocationError(true, infowindow, map.getCenter());
+    });
+  } else {
+    // Browser doesn't support Geolocation
+    handleLocationError(false, infowindow, map.getCenter());
+  }
+  
+  infowindow = new google.maps.InfoWindow();
       var service = new google.maps.places.PlacesService(map);
       service.nearbySearch({
-        location: pos,
-        radius: 20000,
+        location: pozicija,
+        radius: 40000,
         type: ['pharmacy']
       }, callback);
 
@@ -91,14 +102,7 @@ function initMap() {
             infowindow.open(map, this);
           });
         }
- 
-    }, function() {
-      handleLocationError(true, infowindow, map.getCenter());
-    });
-  } else {
-    // Browser doesn't support Geolocation
-    handleLocationError(false, infowindow, map.getCenter());
-  }
+  
 }
 
 
