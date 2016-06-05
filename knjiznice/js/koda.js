@@ -63,10 +63,11 @@ function initMap() {
       };
       
       map.setCenter(pos);
+      infowindow = new google.maps.InfoWindow();
       var service = new google.maps.places.PlacesService(map);
       service.nearbySearch({
         location: pos,
-        radius: 4000,
+        radius: 20000,
         type: ['pharmacy']
       }, callback);
 
